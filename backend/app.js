@@ -11,6 +11,7 @@ const { login, createUser } = require('./controllers/users');
 const NotFoundError = require('./errors/notFounderror');
 const auth = require('./middlewares/auth');
 const { validateLoginData, validateRegisterData } = require('./utils/validators/userValidators');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
@@ -29,6 +30,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(DB_URL);
 
+app.use(requestLogger);
+
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);
 
@@ -40,6 +43,8 @@ app.use('/users', usersRouter);
 app.use('*', () => {
   throw new NotFoundError('Ресурс не найден. Проверьте URL и метод запроса');
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
