@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(DB_URL);
 
-app.use(requestLogger);
+app.use(requestLogger); // Логгер запросов
 
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);
