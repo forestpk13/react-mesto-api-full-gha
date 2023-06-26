@@ -9,8 +9,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 51.250.68.193
 
-Frontend https://...
+Frontend https://forestpk13.nomoreparties.sbs
 
-Backend https://...
+Backend https://api.forestpk13.nomoreparties.sbs
