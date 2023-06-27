@@ -13,7 +13,7 @@ class Api {
 
   _getData(path) {
     return fetch(`${this._baseUrl}${path}`, {
-      headers: this._headers
+      credentials: 'include',
     })
       .then(this._checkResponse);
   }
@@ -22,7 +22,8 @@ class Api {
     return fetch(`${this._baseUrl}${path}`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      credentials: 'include',
     })
       .then(this._checkResponse);
   }
