@@ -27,23 +27,16 @@ export const login = async (password, email) => {
     credentials: 'include',
   });
   if (res.ok) {
-    const data = await res.json();
-    if (data.token) {
-      localStorage.setItem('token', data.token);
-    }
-    return;
+    return await res.json();
   }
   const err = await res.json();
   return Promise.reject(err);
 };
 
-export const getContent = async (token) => {
+export const getContent = async () => {
   const res = await fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    credentials: 'include',
   });
   if (res.ok) {
     return await res.json();

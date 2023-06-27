@@ -15,7 +15,7 @@ class Api {
     return fetch(`${this._baseUrl}${path}`, {
       credentials: 'include',
     })
-      .then(this._checkResponse);
+      .then((res) => this._checkResponse(res));
   }
 
   _changeData(data, path) {
