@@ -8,6 +8,7 @@ export const register = async (password, email) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
+    credentials: 'include',
   });
   if (res.ok) {
     return await res.json();
