@@ -8,6 +8,22 @@ const ConflictError = require('../errors/conflictError');
 const NotFoundError = require('../errors/notFounderror');
 const Utils = require('../utils/utils');
 
+const createTokenById = (id) => {
+  const secretKey = Utils.JWT_SECRET();
+  return jwt.sign({ _id: id }, secretKey, { expiresIn: '7d' });
+};
+
+const sendCookie = (res, { _id: id, email }) => {
+  const token = createTokenById(id);
+  return res
+    .cookie('token', token, {
+      maxAge: 604800000,
+      httpOnly: true,
+      sameSite: true,
+    })
+    .send({ email });
+};
+
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
   bcrypt.hash(req.body.password, 10)
@@ -18,7 +34,10 @@ module.exports.createUser = (req, res, next) => {
       email: req.body.email,
       password: hash,
     }))
-    .then((user) => res.status(201).send({ data: user }))
+    .then((user) => {
+      res.status(201).send({ data: user });
+      sendCookie(res, user);
+    })
     .catch((err) => {
       if (err.code === 11000) {
         next(new ConflictError('Пользователь с данным email уже существует'));
@@ -35,14 +54,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUser(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, Utils.JWT_SECRET, { expiresIn: '7d' });
-      res
-        .cookie('token', token, {
-          maxAge: 3600 * 24 * 7,
-          httpOnly: true,
-          sameSite: true,
-        })
-        .send({ email });
+      sendCookie(res, user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

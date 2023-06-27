@@ -1,13 +1,13 @@
 
 const BASE_URL = 'https://api.forestpk13.nomoreparties.sbs';
 
-export const register = async (password, email) => {
+export const register = async (email, password) => {
   const res = await fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ password, email }),
+    body: JSON.stringify({ email, password }),
     credentials: 'include',
   });
   if (res.ok) {
@@ -24,6 +24,7 @@ export const login = async (password, email) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
+    credentials: 'include',
   });
   if (res.ok) {
     const data = await res.json();
