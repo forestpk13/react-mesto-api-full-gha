@@ -197,6 +197,7 @@ function App() {
     Promise.all([api.getInitialCards(),api.getProfileData()])
     .then(([cards,user]) => {
       setCurrentUser(user);
+      console.log(cards);
       setCards(cards);
       setIsLoadingScreenClosed(true);
     })
