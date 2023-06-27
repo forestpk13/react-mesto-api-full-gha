@@ -42,7 +42,7 @@ module.exports.login = (req, res, next) => {
         .cookie('token', token, {
           maxAge: 3600 * 24 * 7,
           httpOnly: true,
-          origin: 'http://forestpk13.nomoreparties.sbs',
+          sameSite: true,
         })
         .send({ email });
     })
