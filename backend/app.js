@@ -6,6 +6,7 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 const limiter = require('express-rate-limit');
 
+const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/errorHandler');
 const { login, createUser } = require('./controllers/users');
 const NotFoundError = require('./errors/notFounderror');
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect(DB_URL);
 
 app.use(requestLogger); // Логгер запросов
+app.use(cors);
 
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);
