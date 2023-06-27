@@ -1,7 +1,6 @@
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
   }
 
   _checkResponse(res) {
@@ -21,7 +20,9 @@ class Api {
   _changeData(data, path) {
     return fetch(`${this._baseUrl}${path}`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data),
       credentials: 'include',
     })
@@ -31,7 +32,7 @@ class Api {
   _handleLike(method, id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: method,
-      headers: this._headers
+      credentials: 'include',
     })
       .then(this._checkResponse);
   }
@@ -67,8 +68,11 @@ class Api {
   addCard(data) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify(data)
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      credentials: 'include',
     })
     .then(res => this._checkResponse(res));
   }
@@ -76,7 +80,7 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: 'DELETE',
-      headers: this._headers
+      credentials: 'include',
     })
     .then(res => this._checkResponse(res))
   }

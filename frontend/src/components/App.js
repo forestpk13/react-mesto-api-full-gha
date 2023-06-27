@@ -173,14 +173,11 @@ function App() {
   }
 
   const tokenCheck = async () => {
-    const token = localStorage.getItem('token');
-    console.log(token)
-    if (token) {
       try {
-        const res = await auth.getContent(token);
-        if (res.data) {
+        const res = await auth.getContent();
+        if (res.email) {
           setLoggedIn(true);
-          setUserProfile(res.data.email);
+          setUserProfile(res.email);
           navigate('/');
           handleInitialLoading();
         }
@@ -188,7 +185,6 @@ function App() {
         setLoggedIn(false);
         navigate('/sign-in');
       }
-    }
   };
 
   function onLogout() {
@@ -211,6 +207,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -218,6 +215,7 @@ function App() {
       document.addEventListener('keydown', closeByEsc);
     }
     return () => document.removeEventListener('keydown', closeByEsc);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAddPlacePopupOpened, isEditAvatarPopupOpened, isEditProfilePopupOpened, isCardPopupOpened, isConfirmationPopupOpened, isInfoTooltipOpened]);
 
 

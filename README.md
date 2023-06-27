@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.68.193
+IP 51.250.68.193
 
 Frontend https://forestpk13.nomoreparties.sbs
 
