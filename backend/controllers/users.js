@@ -40,9 +40,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, Utils.JWT_SECRET, { expiresIn: '7d' });
       res
         .cookie('token', token, {
-          maxAge: 3600 * 24 * 7,
-          httpOnly: true,
-          origin: 'http://forestpk13.nomoreparties.sbs',
+          maxAge: 604800000,
         })
         .send({ email });
     })
