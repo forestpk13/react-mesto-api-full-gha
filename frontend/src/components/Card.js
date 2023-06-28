@@ -25,7 +25,10 @@ export function Card({card, onCardClick, onCardLike, onCardDelete}) {
             type="button"
             className={cardLikeButtonClassName}
             aria-label="Нравится"
-            onClick={() => onCardLike(card)}
+            onClick={() => {
+              console.log(`$ onClick ${isLiked}`)
+              onCardLike(card)
+            }}
           />
           <p className="photo-card__likes">{card.likes.length}</p>
         </div>

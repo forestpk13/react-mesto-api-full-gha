@@ -105,6 +105,7 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
+    console.log(`$ handleCardLike ${isLiked}`)
     api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -197,7 +198,6 @@ function App() {
     Promise.all([api.getInitialCards(),api.getProfileData()])
     .then(([cards,user]) => {
       setCurrentUser(user);
-      console.log(cards);
       setCards(cards);
       setIsLoadingScreenClosed(true);
     })
