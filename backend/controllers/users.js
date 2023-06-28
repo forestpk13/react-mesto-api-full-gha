@@ -43,12 +43,13 @@ module.exports.login = (req, res, next) => {
           maxAge: 604800000,
           httpOnly: true,
         })
+        // eslint-disable-next-line spaced-comment
         /*
         .cookie('token', token, {
           maxAge: 604800000,
           httpOnly: true,
-          sameSite: false,*/
-        })
+          sameSite: false,
+        })*/
         .send({ email });
     })
     .catch((err) => {
