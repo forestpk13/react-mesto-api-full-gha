@@ -42,7 +42,7 @@ module.exports.login = (req, res, next) => {
         .cookie('token', token, {
           maxAge: 604800000,
           httpOnly: true,
-          sameSite: false,
+          sameSite: true,
         })
         .send({ email });
     })
