@@ -39,10 +39,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, Utils.JWT_SECRET, { expiresIn: '7d' });
       res
-        .setHeader('Set-Cookie', 'cookieName=token; SameSite=None', token, {
-          maxAge: 604800000,
-          httpOnly: true,
-        })
+        .setHeader('Set-Cookie', [`token=${token}; SameSite=None; Max-Age=604800; HttpOnly`])
         // eslint-disable-next-line spaced-comment
         /*
         .cookie('token', token, {
