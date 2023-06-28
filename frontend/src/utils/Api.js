@@ -38,7 +38,6 @@ class Api {
   }
 
   changeLikeCardStatus(id, isLiked) {
-    console.log(`$ changeLikeCardStatus ${id}`)
     return isLiked ? this._handleLike('DELETE', id) : this._handleLike('PUT', id);
   }
 

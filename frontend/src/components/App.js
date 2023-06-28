@@ -105,7 +105,6 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
-    console.log(`$ handleCardLike ${isLiked}`)
     api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -139,14 +138,12 @@ function App() {
   };
 
   function onRegister({password, email}) {
-    console.log('ok')
     auth
       .register(password, email)
-      .then((res) => {
+      .then(() => {
         setLoggedIn(true);
         setIsError(false);
-        console.log(res.data.email)
-        setUserProfile(res.data.email);
+        setUserProfile(email);
         navigate('/');
         setIsInfoTooltipOpened(true);
         handleInitialLoading();
