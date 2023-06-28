@@ -139,11 +139,13 @@ function App() {
   };
 
   function onRegister({password, email}) {
+    console.log('ok')
     auth
       .register(password, email)
       .then((res) => {
         setLoggedIn(true);
         setIsError(false);
+        console.log(res.data.email)
         setUserProfile(res.data.email);
         navigate('/');
         setIsInfoTooltipOpened(true);
@@ -189,9 +191,15 @@ function App() {
   };
 
   function onLogout() {
-    localStorage.removeItem('token');
-    setLoggedIn(false);
-    setUserProfile('');
+    auth.logout()
+      .then(() => {
+        navigate('/');
+        setLoggedIn(false);
+        setUserProfile('');
+      })
+      .catch(err => {
+        console.log(`Ошибка обращения к серверу ${err}`);
+      });
   }
 
   function handleInitialLoading() {
@@ -208,7 +216,6 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {

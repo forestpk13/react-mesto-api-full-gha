@@ -38,7 +38,7 @@ class Api {
   }
 
   changeLikeCardStatus(id, isLiked) {
-    console.log(`$ changeLikeCardStatus ${isLiked}`)
+    console.log(`$ changeLikeCardStatus ${id}`)
     return isLiked ? this._handleLike('DELETE', id) : this._handleLike('PUT', id);
   }
 
@@ -81,5 +81,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://api.forestpk13.nomoreparties.sbs',
+  baseUrl: 'http://localhost:2000',
 });

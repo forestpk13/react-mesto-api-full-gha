@@ -8,7 +8,7 @@ const limiter = require('express-rate-limit');
 
 const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/errorHandler');
-const { login, createUser } = require('./controllers/users');
+const { login, createUser, logout } = require('./controllers/users');
 const NotFoundError = require('./errors/notFounderror');
 const auth = require('./middlewares/auth');
 const { validateLoginData, validateRegisterData } = require('./utils/validators/userValidators');
@@ -17,7 +17,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+const { PORT = 2000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
 
 app.use(cookieParser());
@@ -41,6 +41,7 @@ app.use(auth); // ниже защищенные роуты
 
 app.use('/cards', cardsRouter);
 app.use('/users', usersRouter);
+app.get('/signout', logout);
 
 app.use('*', () => {
   throw new NotFoundError('Ресурс не найден. Проверьте URL и метод запроса');

@@ -25,7 +25,7 @@ module.exports.createCard = (req, res, next) => {
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .populate(linkWithUserModel)
-    .then((cards) => res.send(cards))
+    .then((cards) => res.send(cards.reverse()))
     .catch(next);
 };
 
@@ -62,6 +62,7 @@ const handleLikeCard = (req, res, next, options) => {
           { [action]: { likes: req.user._id } },
           { new: true },
         )
+          .populate(linkWithUserModel)
           .then((newCard) => res.send(newCard));
       }
     })

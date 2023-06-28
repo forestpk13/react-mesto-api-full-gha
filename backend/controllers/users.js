@@ -8,6 +8,15 @@ const ConflictError = require('../errors/conflictError');
 const NotFoundError = require('../errors/notFounderror');
 const Utils = require('../utils/utils');
 
+const createTokenById = (id) => jwt.sign({ _id: id }, Utils.JWT_SECRET, { expiresIn: '7d' });
+
+const sendCookie = (res, { _id: id, email }) => {
+  const token = createTokenById(id);
+  return res
+    .setHeader('Set-Cookie', [`token=${token}; SameSite=None; Secure; Max-Age=604800; HttpOnly`])
+    .send({ email });
+};
+
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
   bcrypt.hash(req.body.password, 10)
@@ -19,7 +28,8 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      res.status(201).send({ data: user });
+      res.status(201);
+      sendCookie(res, user);
     })
     .catch((err) => {
       if (err.code === 11000) {
@@ -37,10 +47,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUser(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, Utils.JWT_SECRET, { expiresIn: '7d' });
-      res
-        .setHeader('Set-Cookie', [`token=${token}; SameSite=None; Secure; Max-Age=604800; HttpOnly`])
-        .send({ email });
+      sendCookie(res, user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -49,6 +56,10 @@ module.exports.login = (req, res, next) => {
         next(err);
       }
     });
+};
+
+module.exports.logout = (_, res) => {
+  res.clearCookie('token').send({ message: 'Вы вышли из профиля' });
 };
 
 const updateUser = (req, res, next, userData) => {
