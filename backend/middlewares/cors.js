@@ -1,5 +1,5 @@
 const allowedCors = [
-  'https://forestpk13.nomoreparties.sbs/',
+  'https://forestpk13.nomoreparties.sbs',
   'http://forestpk13.nomoreparties.sbs',
   'https://localhost:3000',
   'http://localhost:3000',
