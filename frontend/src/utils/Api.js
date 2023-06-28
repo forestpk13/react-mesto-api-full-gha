@@ -88,5 +88,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'http://api.forestpk13.nomoreparties.sbs',
+  baseUrl: 'https://api.forestpk13.nomoreparties.sbs',
 });
