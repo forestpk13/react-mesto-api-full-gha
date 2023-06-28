@@ -39,10 +39,10 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, Utils.JWT_SECRET, { expiresIn: '7d' });
       res
-        .setHeader('Set-Cookie', 'cookieName=cookieValue; SameSite=Lax')
         .cookie('token', token, {
           maxAge: 604800000,
           httpOnly: true,
+          sameSite: true,
         })
         .send({ email });
     })
