@@ -41,6 +41,8 @@ module.exports.login = (req, res, next) => {
       res
         .cookie('token', token, {
           maxAge: 604800000,
+          httpOnly: true,
+          sameSite: true,
         })
         .send({ email });
     })
