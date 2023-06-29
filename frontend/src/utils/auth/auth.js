@@ -19,6 +19,7 @@ export const register = async (password, email) => {
 
 export const login = async (password, email) => {
   const res = await fetch(`${BASE_URL}/signin`, {
+    mode: 'no-cors',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,6 +48,7 @@ export const logout = async () => {
 
 export const getContent = async () => {
   const res = await fetch(`${BASE_URL}/users/me`, {
+    mode: 'no-cors',
     method: 'GET',
     credentials: 'include',
   });
