@@ -48,8 +48,6 @@ module.exports.createUser = (req, res, next) => {
           .status(201)
           .send(user);
       }
-      res.status(201);
-      sendCookie(res, user);
     })
     .catch((err) => {
       if (err.code === 11000) {
@@ -88,8 +86,6 @@ module.exports.login = (req, res, next) => {
           .status(201)
           .send(user);
       }
-      res.status(201);
-      sendCookie(res, user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
