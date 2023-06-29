@@ -19,22 +19,23 @@ const createTokenById = (id) => {
 const sendCookie = (res, { _id: id, email }) => {
   const token = createTokenById(id);
   if (NODE_ENV === 'develop') {
-    return res
+    res
       .cookie('token', token, {
         maxAge: 604800000,
         httpOnly: true,
         sameSite: true,
       })
       .send({ email });
+  } else {
+    return res
+      .cookie('token', token, {
+        maxAge: 604800000,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+      })
+      .send({ email });
   }
-  return res
-    .cookie('token', token, {
-      maxAge: 604800000,
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    })
-    .send({ email });
 };
 
 module.exports.createUser = (req, res, next) => {
