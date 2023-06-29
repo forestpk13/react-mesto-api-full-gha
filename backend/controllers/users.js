@@ -13,12 +13,7 @@ const createTokenById = (id) => jwt.sign({ _id: id }, Utils.JWT_SECRET, { expire
 const sendCookie = (res, { _id: id, email }) => {
   const token = createTokenById(id);
   return res
-    .cookie('token', token, {
-      maxAge: 604800000,
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    })
+    .setHeader('Set-Cookie', [`token=${token}; SameSite=None, Secure; Max-Age=604800; HttpOnly`])
     .send({ email });
 };
 
