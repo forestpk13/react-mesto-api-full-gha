@@ -30,8 +30,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(DB_URL);
-app.use(cors);
 app.use(requestLogger); // Логгер запросов
+app.use(cors);
 
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);

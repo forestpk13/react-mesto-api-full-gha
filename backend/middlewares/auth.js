@@ -5,7 +5,6 @@ const Utils = require('../utils/utils');
 // eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
   const { token } = req.cookies;
-  console.log(req.cookies);
   if (!token) {
     throw new UnauthorizedError('Необходима авторизация');
   }
