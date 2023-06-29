@@ -49,7 +49,7 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      const token = createTokenById(id);
+      const token = createTokenById(user._id);
       if (NODE_ENV === 'production') {
         res
           .cookie('token', token, {
