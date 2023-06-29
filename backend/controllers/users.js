@@ -18,12 +18,13 @@ const createTokenById = (id) => {
 
 const sendCookie = (res, { _id: id, email }) => {
   const token = createTokenById(id);
-  if (NODE_ENV === 'develop') {
+  if (NODE_ENV === 'production') {
     res
       .cookie('token', token, {
         maxAge: 604800000,
         httpOnly: true,
-        sameSite: true,
+        secure: true,
+        sameSite: 'none',
       })
       .send({ email });
   } else {
@@ -31,8 +32,7 @@ const sendCookie = (res, { _id: id, email }) => {
       .cookie('token', token, {
         maxAge: 604800000,
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        sameSite: true,
       })
       .send({ email });
   }
