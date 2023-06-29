@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
-const helmet = require('helmet');
 const limiter = require('express-rate-limit');
 
 const cors = require('./middlewares/cors');
@@ -21,7 +20,6 @@ const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.en
 const app = express();
 
 app.use(cookieParser());
-app.use(helmet());
 app.use(limiter({
   windowMs: 10 * 60 * 1000,
   max: 100,

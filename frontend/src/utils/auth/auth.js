@@ -1,5 +1,5 @@
 
-const BASE_URL = 'https://forestpk13.nomoreparties.sbs';
+const BASE_URL = 'https://api.forestpk13.nomoreparties.sbs';
 
 export const register = async (password, email) => {
   const res = await fetch(`${BASE_URL}/signup`, {
