@@ -173,10 +173,8 @@ function App() {
   }
 
   const tokenCheck = async () => {
-    console.log('&')
       try {
         const res = await auth.getContent();
-        console.log('&2')
         if (res.email) {
           setLoggedIn(true);
           setUserProfile(res.email);

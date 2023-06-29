@@ -19,7 +19,6 @@ export const register = async (password, email) => {
 
 export const login = async (password, email) => {
   const res = await fetch(`${BASE_URL}/signin`, {
-    mode: 'no-cors',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,7 +46,6 @@ export const logout = async () => {
 };
 
 export const getContent = async () => {
-  console.log('&2')
   const res = await fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     credentials: 'include',
