@@ -47,8 +47,8 @@ export const logout = async () => {
 };
 
 export const getContent = async () => {
+  console.log('&2')
   const res = await fetch(`${BASE_URL}/users/me`, {
-    mode: 'no-cors',
     method: 'GET',
     credentials: 'include',
   });

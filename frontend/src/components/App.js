@@ -176,7 +176,7 @@ function App() {
     console.log('&')
       try {
         const res = await auth.getContent();
-        console.log(res.email)
+        console.log('&2')
         if (res.email) {
           setLoggedIn(true);
           setUserProfile(res.email);
