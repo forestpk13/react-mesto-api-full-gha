@@ -64,7 +64,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.logout = (_, res) => {
-  res.clearCookie('token', { secure: true, sameSite: 'none' }).send({ message: 'Вы вышли из профиля' });
+  res.clearCookie('token').send({ message: 'Вы вышли из профиля' });
 };
 
 const updateUser = (req, res, next, userData) => {
