@@ -21,7 +21,7 @@ const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.en
 const app = express();
 
 app.use(cookieParser());
-app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
+app.use(helmet());
 app.use(limiter({
   windowMs: 10 * 60 * 1000,
   max: 100,
@@ -32,7 +32,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect(DB_URL);
 
 app.use(requestLogger); // Логгер запросов
-app.use(cors);
 
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);
