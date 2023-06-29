@@ -30,14 +30,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(DB_URL);
-
-app.use(requestLogger); // Логгер запросов
 app.use(cors);
+app.use(requestLogger); // Логгер запросов
 
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);
 
-app.use(auth); // ниже защищенные роуты
+app.use(auth);// ниже защищенные роуты
 
 app.use('/cards', cardsRouter);
 app.use('/users', usersRouter);
