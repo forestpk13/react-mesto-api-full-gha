@@ -16,28 +16,6 @@ const createTokenById = (id) => {
   return jwt.sign({ _id: id }, secretKey, { expiresIn: '7d' });
 };
 
-const sendCookie = (res, { _id: id, user }) => {
-  const token = createTokenById(id);
-  if (NODE_ENV === 'production') {
-    res
-      .cookie('token', token, {
-        maxAge: 604800000,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-      })
-      .send(user);
-  } else {
-    return res
-      .cookie('token', token, {
-        maxAge: 604800000,
-        httpOnly: true,
-        sameSite: true,
-      })
-      .send(user);
-  }
-};
-
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
   bcrypt.hash(req.body.password, 10)
@@ -49,8 +27,27 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      res.status(201);
-      sendCookie(res, user);
+      const token = createTokenById(user._id);
+      if (NODE_ENV === 'production') {
+        res
+          .cookie('token', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+          })
+          .status(201)
+          .send(user);
+      } else {
+        return res
+          .cookie('token', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            sameSite: true,
+          })
+          .status(201)
+          .send(user);
+      }
     })
     .catch((err) => {
       if (err.code === 11000) {
@@ -68,7 +65,25 @@ module.exports.login = (req, res, next) => {
 
   return User.findUser(email, password)
     .then((user) => {
-      sendCookie(res, user);
+      const token = createTokenById(user._id);
+      if (NODE_ENV === 'production') {
+        res
+          .cookie('token', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+          })
+          .send({ email });
+      } else {
+        return res
+          .cookie('token', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            sameSite: true,
+          })
+          .send({ email });
+      }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
