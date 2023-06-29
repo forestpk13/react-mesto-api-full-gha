@@ -19,39 +19,35 @@ const sendCookie = (res, { _id: id, email }) => {
     .cookie('token', token, {
       maxAge: 604800000,
       httpOnly: true,
-      sameSite: true,
+      secure: true,
+      sameSite: 'none',
     })
     .send({ email });
 };
 
-module.exports.createUser = async (req, res, next) => {
-  const {
-    email,
-    password,
-    name,
-    about,
-    avatar,
-  } = req.body;
-  try {
-    const hash = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
+module.exports.createUser = (req, res, next) => {
+  const { name, about, avatar } = req.body;
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => User.create({
       name,
       about,
       avatar,
-      email,
+      email: req.body.email,
       password: hash,
+    }))
+    .then((user) => {
+      res.status(201);
+      sendCookie(res, user);
+    })
+    .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с данным email уже существует'));
+      } else if (err.name === 'ValidationError') {
+        next(new BadRequestError(err.message));
+      } else {
+        next(err);
+      }
     });
-    res.status(201);
-    sendCookie(res, newUser); // устанавливаю куки и при регистрации, чтобы не вводить логин
-  } catch (err) {
-    if (err.code === 11000) {
-      next(new ConflictError('Пользователь с данным email уже существует'));
-    } else if (err.name === 'ValidationError') {
-      next(new BadRequestError(err.message));
-    } else {
-      res.send(err);
-    }
-  }
 };
 
 module.exports.login = (req, res, next) => {
