@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable import/no-extraneous-dependencies */
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -8,6 +9,8 @@ const ConflictError = require('../errors/conflictError');
 const NotFoundError = require('../errors/notFounderror');
 const Utils = require('../utils/utils');
 
+const { NODE_ENV } = process.env;
+
 const createTokenById = (id) => {
   const secretKey = Utils.getJWTSecretKey();
   return jwt.sign({ _id: id }, secretKey, { expiresIn: '7d' });
@@ -15,6 +18,15 @@ const createTokenById = (id) => {
 
 const sendCookie = (res, { _id: id, email }) => {
   const token = createTokenById(id);
+  if (NODE_ENV === 'develop') {
+    return res
+      .cookie('token', token, {
+        maxAge: 604800000,
+        httpOnly: true,
+        sameSite: true,
+      })
+      .send({ email });
+  }
   return res
     .cookie('token', token, {
       maxAge: 604800000,
