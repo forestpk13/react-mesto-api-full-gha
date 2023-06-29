@@ -36,12 +36,12 @@ app.use(cors);
 
 app.post('/signin', validateLoginData, login);
 app.post('/signup', validateRegisterData, createUser);
+app.get('/signout', logout);
 
 app.use(auth); // ниже защищенные роуты
 
 app.use('/cards', cardsRouter);
 app.use('/users', usersRouter);
-app.get('/signout', logout);
 
 app.use('*', () => {
   throw new NotFoundError('Ресурс не найден. Проверьте URL и метод запроса');
