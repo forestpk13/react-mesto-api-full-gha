@@ -25,7 +25,8 @@ const sendCookie = (res, { _id: id, email }) => {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-      });
+      })
+      .send({ email });
   } else {
     return res
       .cookie('token', token, {
@@ -48,7 +49,7 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      res.status(201).send(user);
+      res.status(201);
       sendCookie(res, user);
     })
     .catch((err) => {
