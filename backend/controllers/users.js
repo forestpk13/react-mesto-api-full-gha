@@ -49,6 +49,27 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
+      const token = createTokenById(id);
+      if (NODE_ENV === 'production') {
+        res
+          .cookie('token', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+          })
+          .status(201)
+          .send(user);
+      } else {
+        return res
+          .cookie('token', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            sameSite: true,
+          })
+          .status(201)
+          .send(user);
+      }
       res.status(201);
       sendCookie(res, user);
     })
