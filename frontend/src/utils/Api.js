@@ -80,5 +80,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'http://localhost:2000',
+  baseUrl: 'https://api.forestpk13.nomoreparties.sbs',
 });
