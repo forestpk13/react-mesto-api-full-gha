@@ -8,7 +8,10 @@ const ConflictError = require('../errors/conflictError');
 const NotFoundError = require('../errors/notFounderror');
 const Utils = require('../utils/utils');
 
-const createTokenById = (id) => jwt.sign({ _id: id }, Utils.JWT_SECRET, { expiresIn: '7d' });
+const createTokenById = (id) => {
+  const secretKey = Utils.getJWTSecretKey();
+  return jwt.sign({ _id: id }, secretKey, { expiresIn: '7d' });
+};
 
 const sendCookie = (res, { _id: id, email }) => {
   const token = createTokenById(id);
@@ -16,35 +19,39 @@ const sendCookie = (res, { _id: id, email }) => {
     .cookie('token', token, {
       maxAge: 604800000,
       httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      sameSite: true,
     })
     .send({ email });
 };
 
-module.exports.createUser = (req, res, next) => {
-  const { name, about, avatar } = req.body;
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => User.create({
+module.exports.createUser = async (req, res, next) => {
+  const {
+    email,
+    password,
+    name,
+    about,
+    avatar,
+  } = req.body;
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
       name,
       about,
       avatar,
-      email: req.body.email,
+      email,
       password: hash,
-    }))
-    .then((user) => {
-      res.status(201);
-      sendCookie(res, user);
-    })
-    .catch((err) => {
-      if (err.code === 11000) {
-        next(new ConflictError('Пользователь с данным email уже существует'));
-      } else if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.message));
-      } else {
-        next(err);
-      }
     });
+    res.status(201);
+    sendCookie(res, newUser); // устанавливаю куки и при регистрации, чтобы не вводить логин
+  } catch (err) {
+    if (err.code === 11000) {
+      next(new ConflictError('Пользователь с данным email уже существует'));
+    } else if (err.name === 'ValidationError') {
+      next(new BadRequestError(err.message));
+    } else {
+      next(err);
+    }
+  }
 };
 
 module.exports.login = (req, res, next) => {

@@ -1,3 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+require('dotenv').config();
+
 module.exports.URL_REGEXP = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
-module.exports.JWT_SECRET = 'a7d0e128f6ac25bc040ba4460a58328f82f5c8c314f3b4f95a086c81cecd7175';
+
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+// eslint-disable-next-line func-names
+module.exports.getJWTSecretKey = function () {
+  return NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret';
+};
