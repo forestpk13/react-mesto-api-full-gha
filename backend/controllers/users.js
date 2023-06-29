@@ -16,7 +16,6 @@ const sendCookie = (res, { _id: id, email }) => {
     .cookie('token', token, {
       maxAge: 604800000,
       httpOnly: true,
-      secure: true,
       sameSite: 'none',
     })
     .send({ email });
