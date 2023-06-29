@@ -49,7 +49,7 @@ module.exports.createUser = async (req, res, next) => {
     } else if (err.name === 'ValidationError') {
       next(new BadRequestError(err.message));
     } else {
-      next(err);
+      res.send(err);
     }
   }
 };
